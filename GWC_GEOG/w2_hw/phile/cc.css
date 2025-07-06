@@ -1,0 +1,41 @@
+/* LOGIN PAGE */
+
+div.ic-Login__header__logo { height: 70px; }
+#login_forgot_password { display:none; color: yellow;}
+
+
+.ic-Login-footer .ic-Login-footer__logo-link {
+    display: block;
+    text-align: center;
+    display: none;
+}
+
+
+/*
+body.modal #modal-box.login-box{
+	background: url("https://lmsstyle.coastline.edu/res/ccc_logo.png") no-repeat scroll -14px 0 #012749;
+}
+body.modal #modal-box.login-box h1, body.modal #modal-box.login-box .h1{
+	background:none;
+}
+*/
+
+
+/*
+footer, .ic-Login-footer .ic-Login-footer__links .ic-Login-footer__logo-link {
+	height: 0px;
+	display:none;
+}
+
+.ic-Login-footer__links { display: none; color: transparent; 	height: 0px;}
+a.ic-Login-footer__logo-link { display: none; color: transparent; 	height: 0px;}
+
+*/
+
+/*
+.ic-Login__link { color: yellow; }
+.ic-forgot_password_link { color: yellow; }
+
+div.ic-Login__body {
+	background: url("https://lmsstyle.coastline.edu/res/cc400x284Graphic.png") no-repeat scroll 0 0;
+}*/

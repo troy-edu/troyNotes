@@ -1,0 +1,172 @@
+////////////////////////////////////////////////////
+// DESIGNPLUS CONFIG                            //
+////////////////////////////////////////////////////
+// Legacy
+var DT_variables = {
+    iframeID: '',
+        // Path to the hosted USU Design Tools
+        path: 'https://designtools.ciditools.com/',
+        templateCourse: '91918',
+        // OPTIONAL: Button will be hidden from view until launched using shortcut keys
+        hideButton: true,
+    	 // OPTIONAL: Limit by course format
+	     limitByFormat: false, // Change to true to limit by format
+	     // adjust the formats as needed. Format must be set for the course and in this array for tools to load
+	     formatArray: [
+            'online',
+            'on-campus',
+            'blended'
+        ],
+        // OPTIONAL: Limit tools loading by users role
+        limitByRole: false, // set to true to limit to roles in the roleArray
+        // adjust roles as needed
+        roleArray: [
+            'student',
+            'teacher',
+            'admin'
+        ],
+        // OPTIONAL: Limit tools to an array of Canvas user IDs
+        limitByUser: false, // Change to true to limit by user
+        // add users to array (Canvas user ID not SIS user ID)
+        userArray: [
+            '1234',
+            '987654'
+        ]
+};
+
+// New
+DpPrimary = {
+    lms: 'canvas',
+    templateCourse: '121501',
+    hideButton: false,
+    hideLti: false,
+    extendedCourse: '', // added in sub-account theme
+    sharedCourse: '', // added from localStorage
+    courseFormats: [],
+    canvasRoles: [],
+    canvasUsers: [],
+    canvasCourseIds: [],
+    plugins: [],
+    excludedModules: [],
+    includedModules: [],
+    lang: 'en',
+    defaultToLegacy: false,
+    enableVersionSwitching: true,
+    hideSwitching: true,
+}
+
+// merge with extended/shared customizations config
+DpConfig = { ...DpPrimary, ...(window.DpConfig ?? {}) }
+
+$(function () {
+    const uriPrefix = (location.href.includes('.beta.')) ? 'beta.' : '';
+    const toolsUri = (DpConfig.toolsUri) ? DpConfig.toolsUri : `https://${uriPrefix}designplus.ciditools.com/`;
+    $.getScript(`${toolsUri}js/controller.js`);
+});
+////////////////////////////////////////////////////
+// END DESIGNPLUS CONFIG                        //
+////////////////////////////////////////////////////
+
+
+
+
+/**
+// @name        Global Nav - Custom Links
+// @namespace   https://github.com/robert-carroll/ccsd-canvas
+//
+**/
+(function () {
+  "use strict";
+
+  // configure links
+  const links = [
+    {
+      title: "TimelyCare",
+      icon_svg: `<svg version="1.1" class="ic-icon-svg ic-icon-svg--lti menu-item__icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+      <path d="M12.2,8.9v48.7l18.3-18.3H19.6v-23L12.2,8.9z M44.4,37.6l7.4,7.4V7.1H13.9l7.4,7.4h23V37.6z M26.5,46.8h23.6l-7.4-7.4h-8.7
+      L26.5,46.8z"></path>
+    </svg>`,
+      href: "https://coastdistrict.instructure.com/accounts/119/external_tools/96163?display=borderless&launch_type=global_navigation",
+      target: "_blank",
+    }, // ready for another
+  ];
+
+  // leave this alone
+  const globalNavCustomLinks = (links) => {
+    let gnci_svg = (svg, tidle) => {
+      svg.setAttribute("id", `global_nav_${tidle}_svg`);
+      svg.setAttribute(
+        "class",
+        "ic-icon-svg menu-item__icon ic-icon-svg--apps svg-icon-help ic-icon-svg-custom-tray"
+      );
+      if (svg.getAttribute("height") > "26px") {
+        svg.removeAttribute("height");
+      }
+      if (svg.getAttribute("width") > "26px") {
+        svg.removeAttribute("width");
+      }
+    };
+
+    links.forEach((link) => {
+      // selector id from link title
+      const tidle = link.title.replace(/\W/g, "_").toLowerCase();
+      // global nav icon
+      var icon = $("<li>", {
+        id: `global_nav_${tidle}_link`,
+        class: `ic-app-header__menu-list-item`,
+        html: `<a id="global_nav_${tidle}_link" role="button" href="${link.href}" target="${link.target}" class="ic-app-header__menu-list-link">
+            <div class="menu-item-icon-container" role="presentation"><span class="svg-${tidle}-holder"></span></div>
+            <div class="menu-item__text">${link.title}</div></a>`,
+      });
+      // instructure icon
+      if (/^icon-[a-z]/.test(link.icon_svg) == true) {
+        icon.find(`.svg-${tidle}-holder`).append(
+          $("<div>", {
+            id: `global_nav_${tidle}_svg`,
+            class: "menu-item-icon-container",
+            html: `<i class="icon-line ${link.icon_svg} gnct_inst_menu_icon"></i></div>`,
+            role: "presentation",
+          })
+        );
+        // externally hosted svg
+      } else if (/^http/.test(link.icon_svg)) {
+        icon.find(`.svg-${tidle}-holder`).load(link.icon_svg, function () {
+          let svg = $(this).find("svg")[0];
+          gnci_svg(svg, tidle);
+        });
+        // inline/script svg
+      } else if (/^<svg/.test(link.icon_svg)) {
+        icon.find(`.svg-${tidle}-holder`).append($(link.icon_svg));
+        let svg = icon.find(`.svg-${tidle}-holder`).find("svg")[0];
+        gnci_svg(svg, tidle);
+      }
+      $("#menu").append(icon);
+    });
+  };
+
+  // handle css, remove or comment if you're also using Global Nav Custom Tray
+  (function () {
+    if (
+      document.querySelectorAll('[data-global-nav-custom-css="set"]').length ==
+      0
+    ) {
+      let styles = {
+        "i.gnct_inst_menu_icon:before":
+          "font-size: 26px; width: 26px; line-height: 26px;",
+        "i.gnct_inst_menu_icon": "width: 26px; height: 26px;",
+      };
+      if (typeof styles !== "undefined" && Object.keys(styles).length > 0) {
+        let style = document.createElement("style");
+        style.setAttribute("data-global-nav-custom-css", "set");
+        document.head.appendChild(style);
+        let sheet = style.sheet;
+        Object.keys(styles).forEach(function (key) {
+          sheet.insertRule(`${key} { ${styles[key]} }`, sheet.cssRules.length);
+        });
+      }
+    }
+  })();
+
+  // add links to menu
+  globalNavCustomLinks(links);
+})();

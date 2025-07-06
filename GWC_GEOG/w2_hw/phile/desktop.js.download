@@ -1,0 +1,177 @@
+/***********************
+ * Start UDOIT Student *
+ ***********************/
+
+UdoitConfig = {
+    supportedAlternates: ['pdf', 'html', 'mp3', 'epub', 'txt'],
+    allowAlternateRequest: true, // Allows the students to request alternate formats by default.
+    enabledByDefault: true, // Enables the student UI by default.
+  }
+  
+  function loadUdoitScript() {
+    if (!UdoitConfig.toolUri) {
+      UdoitConfig.toolUri = 'https://udoit3.ciditools.com';
+    }
+    let script = document.createElement('script'),
+      firstScript = document.getElementsByTagName('script')[0]
+    script.src = `${UdoitConfig.toolUri}/build/studentController.js`
+    script.crossOrigin = 'anonymous'
+    if (null !== firstScript.parentNode) {
+      firstScript.parentNode.insertBefore(script, firstScript)
+      console.log('udoit student controller added')
+    }
+  }
+  
+  function checkForUdoit() {
+    let body = document.getElementsByTagName('body')[0]
+    if (!body.className.includes('udoit-student-loaded')) {
+      loadUdoitScript()
+      body.className += ' udoit-student-loaded'
+    }
+  }
+  checkForUdoit()
+  /*** END UDOIT Student ***/
+
+var _g = {
+
+    toan_CLS: function() {
+        console.log('toan_MOBILE_CLS()');
+        $('a[href*="coastlinelive.com"]').each(function(e) { $(this).attr("rel", "cls"); })
+        
+        //$('a[href*="coastlinelive.com"]').each(function(e) { $(this).attr("rel", "cls"); 
+        //  $(this).append("<b>...</b>");          
+        // })
+
+        if (++_gv.cCLS < 5) _gr(_g.toan_CLS, 1000);
+
+    },
+    RaP: function() {
+        console.log('RaP()');
+
+        var el = $("a:contains('Report a Problem')");
+        if (el.length > 0) {
+            el.text("Golden West Support for Students");
+            $(".ic-NavMenu-list-item__helper-text.is-help-link:contains('If Canvas misbehaves, tell us about it')").text("Daytime: 714.895.8389 After hours: 844.600.4952");
+        }
+
+        el = $('a.ic-NavMenu-list-item__link[href|="#create_ticket"]');
+        if (el.length > 0) {
+            el.click(function(e) { _g.doRaP(); });
+            _gv.cRaP = 0;
+        } else if (_gv.cRaP > 0 && (--_gv.cRaP > 0)) _gr(_g.RaP, 250);
+
+    },
+    doRaP: function() {
+
+        _gv.cRaP = 50;
+        _gr(_g.RaP, 100);
+
+    },
+    always: function() {
+        console.log('always()');
+        $('head').append('<meta name="referrer" content="always" />');
+
+    },
+    login_Start: function() {
+        console.log('start()');
+        $('#login_forgot_password').html('<span style="color:yellow;">Password help</span>').show();
+        $('#login_forgot_password').after('<br/><a id="coastline_support" class="ic-Login__link forgot_password_link" href="http://coastline.edu/canvas" style="display: inline; color:yellow;" target="_blank"><span style="color:yellow;">Canvas support</span></a>');
+
+    },
+    login_Support: function() {
+        console.log('support()');
+        $('#coastline_support').off();
+        $('#coastline_support').find("*").off();
+
+    },
+    astr: function(s, e) {
+        var a = e.split(' ');
+        for (var i = 0; i < a.length; i++)
+            if (s.indexOf(a[i]) < 0) return false;
+        return true;
+    },
+    istr: function(s, e) {
+        var a = e.split(' ');
+        for (var i = 0; i < a.length; i++)
+            if (s.indexOf(a[i]) >= 0) return true;
+        return false;
+
+    },
+    r: function(fn, t) {
+        return setTimeout(fn, t);
+    },
+    e: function(sel, cb, ct) {
+        return $(sel).length > 0 ? cb($(sel)) : ((++ct < 30) ? setTimeout(function() {
+            console.log('onElementRendered e ' + ct);
+            _g.e(sel, cb, ct);
+        }, 250) : 0);
+    }
+
+}; //_g{}
+
+var _gr = function(fn, t) {
+    return setTimeout(fn, t); };
+
+var _gv = { cCLS: 0, cRaP: 0 }; //_gv{}
+
+
+
+$(document).ready(function() {
+
+    var wlp = window.location.pathname;
+
+    console.log('path:' + wlp);
+
+    if (wlp.indexOf('/login') >= 0) {
+        /* login page ************************************************************************************************/
+
+        _g.login_Start();
+        _gr(_g.login_Support, 500);
+
+        /* login page ************************************************************************************************/
+    } else {
+        /* normal page ***********************************************************************************************/
+
+        _g.always();
+
+        if (_g.astr(wlp, 'courses/ /pages')) {
+            console.log('doing toan()');
+            _gr(_g.toan_CLS, 1000);
+        }
+
+        $('a#global_nav_help_link').click(function(e) { _g.doRaP(); });
+        //_g.doRaP();
+
+        // $('a#global_nav_help_link').click(function(e){ _g.doRaP(); });
+
+        /* normal page ***********************************************************************************************/
+    }
+
+if(window.location.pathname.indexOf("discussion_topics")>-1&&window.location.href.indexOf("label=no")<0){let lab=async function(){let toks=window.location.pathname.split("/");let cid;let tids=[];if(window.location.pathname.indexOf("groups")>-1){let g=toks[toks.indexOf("discussion_topics")-1];let result=await $.ajax({url:`/api/v1/groups/${g}`,type:"GET"});cid=result.course_id;}else{cid=toks[toks.indexOf("discussion_topics")-1];}
+let teachers=await $.ajax({url:`/api/v1/courses/${cid}/enrollments?role[]=TeacherEnrollment&per_page=100`});teachers.forEach((t)=>tids.push(t.user_id));let updateGo=true;let text='&nbsp&nbsp<span style="background-color:#3300CC" class="label" title="Instructor">Instructor</span>';function updateL(){if(updateGo){updateGo=false;setTimeout(function(){updateGo=true;},200);$(".author").each(function(n){let r=$(this).attr("href"),s=r.substr(r.lastIndexOf("/")+1);if(tids.indexOf(Number.parseInt(s))>-1){$(this).children("[title='Instructor']").length<1&&$(this).append(text);}});}}
+updateL();$(document).ajaxComplete(function(e,t,n){updateL();});let targetNode=document.getElementById("discussion_subentries");let config={childList:true,subtree:true};let callback=function(mutationsList,observer){for(let mutation of mutationsList){if(mutation.type==="childList"){updateL();}}};let observer=new MutationObserver(callback);observer.observe(targetNode,config);}
+lab();}
+
+
+});
+
+/******************************** SS  **********************************************/
+   var ss_button = `<li class="menu-item ic-app-header__menu-list-item">
+      <a id="global_nav_ss_link" role="button" href="/courses/78372" class="ic-app-header__menu-list-link">
+        <div class="menu-item-icon-container" aria-hidden="true">
+         <svg class="ic-icon-svg menu-item__icon" version="1.1"  fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0,0,32,32" stroke="currentColor"><path d="M 16.274607,18.630333 0.39346163,10.008024 16.046893,0.19808264 32.39346,9.9287384 Z m 9.37528,7.674186 c 0,0 -5.549063,4.271512 -9.567039,4.271512 -4.017977,0 -9.5670401,-4.271512 -9.5670401,-4.271512 V 15.07074 L 16.046893,20.292028 25.64889,15.07074 V 26.304519 Z M 27.595456,11.747352 H 28.15276 V 31.01045 h -0.557304 z m 1.139574,14.38373 c 0,0.85232 -0.417475,1.542765 -0.932832,1.542765 -0.515356,0 -0.932833,-0.690445 -0.932833,-1.542765 0,-0.85232 0.417477,-1.542766 0.932833,-1.542766 0.515357,0 0.932832,0.690446 0.932832,1.542766 z m 0.311614,3.713209 c 0,1.299953 -0.557306,2.35379 -1.244446,2.35379 -0.687141,0 -1.244446,-1.053837 -1.244446,-2.35379 0,-1.299953 0.557305,-2.353792 1.244446,-2.353792 0.68714,0 1.244446,1.053839 1.244446,2.353792 z"></path></svg>          
+        </div>
+        <div class="menu-item__text">
+          Student Services
+        </div>
+      </a>
+    </li>`;
+var gnhl = document.querySelector('#global_nav_help_link')
+if(gnhl && gnhl.parentNode){
+   gnhl.parentNode.insertAdjacentHTML('beforebegin', ss_button);
+}
+
+
+// Start Pope Tech Accessibility Guide
+var key='bL4791T05HlwRpmEg80X0VOUbC39voQH';(function(a){function b(a,b){var c=document.createElement("script");c.type="text/javascript",c.readyState?c.onreadystatechange=function(){("loaded"===c.readyState||"complete"===c.readyState)&&(c.onreadystatechange=null,b())}:c.onload=function(){b()},c.src=a,document.getElementsByTagName("head")[0].appendChild(c)}function c(a){return a&&("TeacherEnrollment"===a||"TaEnrollment"===a||"DesignerEnrollment"===a)}function d(){var a=window.location.pathname;return!!(-1!==a.indexOf("/edit")||-1!==a.indexOf("/new")||-1!==a.indexOf("/syllabus")||a.match(/\/courses\/[0-9]+\/pages\/?$/)||a.match(/\/courses\/[0-9]+\/?$/))}function e(){return f()||g()}function f(){var a=/\/courses\/[0-9]+\/pages\/?$/,b=window.location.pathname;return console.log("Check for pages url",window.location.pathname),console.log(a.test(b)),a.test(b)}function g(){var a=window.location.pathname;return console.log("Check for courses url",window.location.pathname),console.log("/courses"===a),"/courses"===a}function h(){var a=/\/accounts\/[0-9]+\/external_tools\/[0-9]+\/?$/,b=/\/courses\/[0-9]+\/external_tools\/[0-9]+\/?$/,c=window.location.pathname;return console.log("Check for external tool url",window.location.pathname),console.log(a.test(c)||b.test(c)),a.test(c)||b.test(c)}function i(f){for(var g=0;g<f.length;++g)if(localStorage.setItem(`${j}.${l}`,JSON.stringify(f)),c(f[g].type)){if(d()&&b("https://canvas-cdn.pope.tech/loader.min.js",function(){}),console.log("Key",a),null===a)break;(e()||h())&&(console.log("Load column"),b(`https://canvas-cdn.pope.tech/accessibility-column.min.js?key=${a}`,function(){}));break}}var j="pt-instructor-guide",k="username",l="enrollments";return-1===window.location.href.indexOf("/login/canvas")?-1===window.location.href.indexOf("?login_success=1")?void function(a,b){var c=localStorage.getItem(`${a}.${b}`);null===c?$.get("/api/v1/users/self/enrollments?type[]=DesignerEnrollment&type[]=TaEnrollment&type[]=TeacherEnrollment",function(a){i(a)}):(c=JSON.parse(c),i(c))}("pt-instructor-guide",l):(localStorage.removeItem(`${"pt-instructor-guide"}.${k}`),void $.get("/api/v1/users/self",function(a){localStorage.setItem(`${"pt-instructor-guide"}.${k}`,a.name)})):(localStorage.removeItem(`${"pt-instructor-guide"}.${k}`),localStorage.removeItem(`${"pt-instructor-guide"}.${"uuid"}`),localStorage.removeItem(`${"pt-instructor-guide"}.${"settings"}`),void localStorage.removeItem(`${"pt-instructor-guide"}.${l}`))})(key);
+// End Pope Tech Accessibility Guide
